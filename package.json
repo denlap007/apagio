@@ -1,0 +1,32 @@
+{
+  "name": "apagio",
+  "version": "1.0.0",
+  "description": "A simple k8s dashboard",
+  "private": "true",
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denlap007/apagio.git"
+  },
+  "keywords": [
+    "k8s",
+    "dashboard",
+    "kubernetes",
+    "react"
+  ],
+  "author": "The Apagio Team",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/denlap007/apagio/issues"
+  },
+  "homepage": "https://github.com/denlap007/apagio#readme",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "webpack": "^5.3.2",
+    "webpack-cli": "^4.1.0",
+    "webpack-merge": "^5.3.0"
+  }
+}

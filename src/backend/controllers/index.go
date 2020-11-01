@@ -14,17 +14,3 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with apagio.  If not, see <http://www.gnu.org/licenses/>.
-
-package main
-
-import (
-	"log"
-	"net/http"
-
-	"github.com/denlap007/apagio/src/backend/config"
-)
-
-func main() {
-	log.Println("Server is running on port ", config.ServerPort)
-	log.Println(http.ListenAndServe(":"+config.ServerPort, http.FileServer(http.Dir("./public"))))
-}
