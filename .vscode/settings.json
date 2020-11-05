@@ -1,4 +1,13 @@
 {
-    "licenser.license": "GPLv3",
-    "licenser.author": "The Apagio Authors"
+  "licenser.license": "GPLv3",
+  "licenser.author": "The Apagio Authors",
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.alwaysShowStatus": true,
+  "prettier.disableLanguages": ["js"]
 }
