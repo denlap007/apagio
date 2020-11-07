@@ -15,10 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with apagio.  If not, see <http://www.gnu.org/licenses/>.
 
-function component() {
-  const element = document.createElement("div");
-  element.innerHTML = "empty dashboard :)";
-  return element;
-}
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
 
-document.body.appendChild(component());
+ReactDOM.render(<App />, document.getElementById("root"));

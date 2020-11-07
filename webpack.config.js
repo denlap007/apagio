@@ -1,26 +1,47 @@
-// Copyright (C) 2020 The Apagio Authors
-// 
-// This file is part of apagio.
-// 
-// apagio is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// apagio is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with apagio.  If not, see <http://www.gnu.org/licenses/>.
+const path = require("path");
+const webpack = require("webpack");
 
-const path = require('path');
+const publicPath = "/public/";
+const devServerPort = 3000;
 
 module.exports = {
-  entry: './src/frontend/index.js',
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public'),
+  target: ["web", "es5"],
+  entry: [
+    `webpack-dev-server/client?http://localhost:${devServerPort}`,
+    "webpack/hot/dev-server",
+    "./src/frontend/index.jsx",
+  ],
+  mode: "development",
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        loader: "babel-loader",
+        options: { presets: ["@babel/env"] },
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+    ],
   },
+  resolve: {
+    extensions: ["*", ".js", ".jsx"],
+    alias: { "react-dom": "@hot-loader/react-dom" },
+  },
+  output: {
+    path: path.resolve(__dirname, publicPath),
+    publicPath,
+    filename: "bundle.js",
+  },
+  devServer: {
+    contentBase: path.join(__dirname, publicPath),
+    port: 3000,
+    publicPath: `http://localhost:3000${publicPath}`,
+    hotOnly: true,
+    host: "0.0.0.0",
+    headers: { "Access-Control-Allow-Origin": "*" },
+  },
+  plugins: [new webpack.HotModuleReplacementPlugin()],
 };

@@ -9,5 +9,6 @@
     "source.fixAll.eslint": true
   },
   "eslint.alwaysShowStatus": true,
-  "prettier.disableLanguages": ["js"]
+  "prettier.disableLanguages": ["js"],
+  "files.eol": "\n"
 }

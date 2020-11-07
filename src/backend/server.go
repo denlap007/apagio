@@ -26,5 +26,7 @@ import (
 
 func main() {
 	log.Println("Server is running on port ", config.ServerPort)
-	log.Println(http.ListenAndServe(":"+config.ServerPort, http.FileServer(http.Dir("./public"))))
+	servePath := "./public"
+
+	log.Println(http.ListenAndServe(":"+config.ServerPort, http.FileServer(http.Dir(servePath))))
 }
