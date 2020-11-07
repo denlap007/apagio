@@ -28,6 +28,8 @@ var (
 	ServerPort = "8080"
 	// APIVersion the version of the server api
 	APIVersion = "/api/v1.0"
+	// StaticDir path to server assets from
+	StaticDir = "./public"
 )
 
 func parseConfig() {
