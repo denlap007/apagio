@@ -18,11 +18,8 @@
     }
   },
   "lint-staged": {
-    "src/**/*.js": [
-      "npm run lint:fix"
-    ],
-    "src/**/*.jsx": [
-      "npm run lint:fix"
+    "src/**/*.{js,jsx}": [
+      "node_modules/.bin/eslint --fix"
     ]
   },
   "repository": {
