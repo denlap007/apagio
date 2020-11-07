@@ -1,17 +1,14 @@
 const path = require("path");
-const webpack = require("webpack");
 
-const publicPath = "/public/";
-const devServerPort = 3000;
+const buildPath = path.join(__dirname, "./public");
+const nodeEnv = process.env.NODE_ENV || "development";
+const publicPath =
+  nodeEnv === "production"
+    ? path.resolve(__dirname, "/public")
+    : `http://localhost:3000/public`;
 
 module.exports = {
   target: ["web", "es5"],
-  entry: [
-    `webpack-dev-server/client?http://localhost:${devServerPort}`,
-    "webpack/hot/dev-server",
-    "./src/frontend/index.jsx",
-  ],
-  mode: "development",
   module: {
     rules: [
       {
@@ -20,28 +17,31 @@ module.exports = {
         loader: "babel-loader",
         options: { presets: ["@babel/env"] },
       },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
     ],
   },
   resolve: {
-    extensions: ["*", ".js", ".jsx"],
-    alias: { "react-dom": "@hot-loader/react-dom" },
+    extensions: [".js", ".jsx"],
   },
   output: {
-    path: path.resolve(__dirname, publicPath),
+    path: buildPath,
     publicPath,
-    filename: "bundle.js",
+    filename: "[name].js",
   },
-  devServer: {
-    contentBase: path.join(__dirname, publicPath),
-    port: 3000,
-    publicPath: `http://localhost:3000${publicPath}`,
-    hotOnly: true,
-    host: "0.0.0.0",
-    headers: { "Access-Control-Allow-Origin": "*" },
+  optimization: {
+    moduleIds: "named",
+    runtimeChunk: {
+      name: "runtime",
+    },
+    splitChunks: {
+      cacheGroups: {
+        defaultVendors: {
+          test: /node_modules/,
+          chunks: "all",
+          name: "vendor",
+          priority: 10,
+          enforce: true,
+        },
+      },
+    },
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
 };

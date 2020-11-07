@@ -6,8 +6,9 @@
   "scripts": {
     "build": "webpack",
     "start": "run-p dev:client dev:server",
+    "dev:client": "cross-env NODE_ENV=development node_modules/.bin/webpack serve --config ./webpack.dev.js",
     "dev:server": "cross-env NODE_ENV=development go run ./src/backend/server.go",
-    "dev:client": "node_modules/.bin/webpack serve",
+    "prod:client": "cross-env NODE_ENV=production node_modules/.bin/webpack --env analyse=true --mode production --config webpack.prod.js",
     "lint": "node_modules/.bin/eslint --ext .jsx --ext .js ./src/frontend",
     "lint:fix": "node_modules/.bin/eslint --ext .jsx --ext .js ./src/frontend  --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -45,6 +46,8 @@
     "@hot-loader/react-dom": "^17.0.0",
     "D": "^1.0.0",
     "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.3.0",
     "cross-env": "^7.0.2",
     "css-loader": "^5.0.1",
     "gulp": "^4.0.2",
@@ -70,6 +73,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.1.2",
     "style-loader": "^2.0.0",
+    "webpack-bundle-analyzer": "^4.1.0",
     "webpack-dev-server": "^3.11.0"
   }
 }
