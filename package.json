@@ -9,7 +9,21 @@
     "dev:server": "cross-env NODE_ENV=development go run ./src/backend/server.go",
     "dev:client": "node_modules/.bin/webpack serve",
     "lint": "node_modules/.bin/eslint --ext .jsx --ext .js ./src/frontend",
+    "lint:fix": "node_modules/.bin/eslint --ext .jsx --ext .js ./src/frontend  --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "npm run lint:fix"
+    ],
+    "src/**/*.jsx": [
+      "npm run lint:fix"
+    ]
   },
   "repository": {
     "type": "git",
@@ -54,6 +68,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.5.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.1.2",
     "style-loader": "^2.0.0",
