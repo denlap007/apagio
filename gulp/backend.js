@@ -35,16 +35,11 @@ gulp.task(
   })
 );
 gulp.task("templates:prod", function (doneFn) {
-  const {
-    publicPath,
-    jsBundleName,
-    jsVendorName,
-    jsRuntimeName,
-  } = conf.wpkConf;
+  const { jsBundleName, jsVendorName, jsRuntimeName } = conf.wpkConf;
   const dataMap = {
-    bundle: `${publicPath}${jsBundleName}.js`,
-    vendor: `${publicPath}${jsVendorName}.js`,
-    runtime: `${publicPath}${jsRuntimeName}.js`,
+    bundle: `${jsBundleName}.js`,
+    vendor: `${jsVendorName}.js`,
+    runtime: `${jsRuntimeName}.js`,
   };
 
   const errCheck = function (err, doneFn) {

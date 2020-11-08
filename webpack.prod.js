@@ -1,4 +1,5 @@
 const { merge } = require("webpack-merge");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const common = require("./webpack.config");
 
@@ -7,7 +8,12 @@ const {
 } = require("./gulp/conf");
 
 module.exports = (env = {}) => {
-  const plugins = [];
+  const plugins = [
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ["**/*", "!index.html"],
+      verbose: true,
+    }),
+  ];
 
   if (env.analyse === "true") {
     plugins.push(
