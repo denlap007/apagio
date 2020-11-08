@@ -39,7 +39,7 @@ const version = {
    */
   year: "2020",
 };
-console.log("==========> process.platform", process.platform);
+
 /**
  * Exported configuration object with common constants used in build pipeline.
  */
