@@ -1,10 +1,12 @@
 /**
  * @fileoverview Gulp tasks for compiling backend application.
  */
+import fs from "fs";
 import gulp from "gulp";
 import lodash from "lodash";
 import path from "path";
 
+import replaceAll from "./utils";
 import conf from "./conf";
 import goCommand from "./gocommand";
 
@@ -32,6 +34,36 @@ gulp.task(
     );
   })
 );
+gulp.task("templates:prod", function (doneFn) {
+  const {
+    publicPath,
+    jsBundleName,
+    jsVendorName,
+    jsRuntimeName,
+  } = conf.wpkConf;
+  const dataMap = {
+    bundle: `${publicPath}${jsBundleName}.js`,
+    vendor: `${publicPath}${jsVendorName}.js`,
+    runtime: `${publicPath}${jsRuntimeName}.js`,
+  };
+
+  const errCheck = function (err, doneFn) {
+    if (err) {
+      console.log(err);
+      return doneFn();
+    }
+  };
+
+  fs.readFile(conf.paths.indexTemplateSrc, "utf8", function (err, data) {
+    errCheck(err);
+    const result = replaceAll(data, dataMap);
+
+    fs.writeFile(conf.paths.indexTemplateDst, result, "utf8", function (err) {
+      errCheck(err);
+      doneFn();
+    });
+  });
+});
 
 /**
  * Compiles backend application in production mode for the current architecture and places the
@@ -42,7 +74,7 @@ gulp.task(
  */
 gulp.task(
   "backend:prod",
-  gulp.series(() => {
+  gulp.series("templates:prod", () => {
     const outputBinaryPath = path.join(
       conf.paths.dist,
       conf.backend.binaryName

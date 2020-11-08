@@ -1,11 +1,16 @@
-const path = require("path");
+const {
+  wpkConf: {
+    devServerHost,
+    devServerPort,
+    jsVendorName,
+    jsRuntimeName,
+    outputPath,
+    outputPublicPath,
+    publicPath,
+  },
+} = require("./gulp/conf");
 
-const buildPath = path.join(__dirname, "./public");
 const nodeEnv = process.env.NODE_ENV || "development";
-const publicPath =
-  nodeEnv === "production"
-    ? path.resolve(__dirname, "/public")
-    : `http://localhost:3000/public`;
 
 module.exports = {
   target: ["web", "es5"],
@@ -23,21 +28,24 @@ module.exports = {
     extensions: [".js", ".jsx"],
   },
   output: {
-    path: buildPath,
-    publicPath,
+    path: outputPath,
+    publicPath:
+      nodeEnv === "production"
+        ? outputPublicPath
+        : `${devServerHost}:${devServerPort}${publicPath}`,
     filename: "[name].js",
   },
   optimization: {
     moduleIds: "named",
     runtimeChunk: {
-      name: "runtime",
+      name: jsRuntimeName,
     },
     splitChunks: {
       cacheGroups: {
         defaultVendors: {
           test: /node_modules/,
           chunks: "all",
-          name: "vendor",
+          name: jsVendorName,
           priority: 10,
           enforce: true,
         },

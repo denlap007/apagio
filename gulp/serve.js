@@ -1,10 +1,12 @@
 /**
  * @fileoverview Gulp tasks that serve the application.
  */
+import fs from "fs";
 import child from "child_process";
 import gulp from "gulp";
 import path from "path";
 import conf from "./conf";
+import replaceAll from "./utils";
 
 /**
  * Currently running backend process object. Null if the backend is not running.
@@ -46,13 +48,47 @@ gulp.task("watch", () => {
   gulp.watch([conf.paths.backendSrc], gulp.parallel("spawn-backend", "watch"));
 });
 
+gulp.task("templates:dev", function (doneFn) {
+  const {
+    devServerHost,
+    devServerPort,
+    publicPath,
+    jsBundleName,
+    jsVendorName,
+    jsRuntimeName,
+  } = conf.wpkConf;
+  const hostPath = `${devServerHost}:${devServerPort}${publicPath}`;
+  const dataMap = {
+    bundle: `${hostPath}${jsBundleName}.js`,
+    vendor: `${hostPath}${jsVendorName}.js`,
+    runtime: `${hostPath}${jsRuntimeName}.js`,
+  };
+
+  const errCheck = function (err, doneFn) {
+    if (err) {
+      console.log(err);
+      return doneFn();
+    }
+  };
+
+  fs.readFile(conf.paths.indexTemplateSrc, "utf8", function (err, data) {
+    errCheck(err);
+    const result = replaceAll(data, dataMap);
+
+    fs.writeFile(conf.paths.indexTemplateDst, result, "utf8", function (err) {
+      errCheck(err);
+      doneFn();
+    });
+  });
+});
+
 /**
  * Spawns new backend application process. Previously spawned
  * backend process is killed beforehand.
  */
 gulp.task(
   "spawn-backend",
-  gulp.series("kill-backend", "backend", (doneFn) => {
+  gulp.series("kill-backend", "backend", "templates:dev", (doneFn) => {
     runningBackendProcess = child.spawn(
       path.join(conf.paths.serve, conf.backend.binaryName),
       getBackendArgs(),

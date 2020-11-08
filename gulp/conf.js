@@ -1,7 +1,7 @@
 /**
  * @fileoverview Common configuration constants used in other build/test files.
  */
-import path from "path";
+const path = require("path");
 
 /**
  * Base path for all other paths.
@@ -43,7 +43,7 @@ const version = {
 /**
  * Exported configuration object with common constants used in build pipeline.
  */
-export default {
+module.exports = {
   /**
    * the expression of recording version info into src/app/backend/client/manager.go
    */
@@ -92,6 +92,21 @@ export default {
   },
 
   /**
+   * webpack config
+   */
+  wpkConf: {
+    jsBundleName: "bundle",
+    jsVendorName: "vendor",
+    jsRuntimeName: "runtime",
+    publicPath: "/public/",
+    devServerPort: 3000,
+    devServerHost: "http://localhost",
+    frontEndEntypoint: "./src/frontend/index.jsx",
+    outputPath: path.join(basePath, "public"),
+    outputPublicPath: path.join(basePath, "public"),
+  },
+
+  /**
    * Absolute paths to known directories, e.g., to source directory.
    */
   paths: {
@@ -102,5 +117,7 @@ export default {
     goTools: path.join(basePath, ".tools/go"),
     serve: path.join(basePath, ".tmp/serve"),
     src: path.join(basePath, "src"),
+    indexTemplateSrc: path.join(basePath, "templates/html/index.html"),
+    indexTemplateDst: path.join(basePath, "public/index.html"),
   },
 };
