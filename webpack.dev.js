@@ -18,6 +18,7 @@ module.exports = merge(common, {
       `webpack-dev-server/client?${devServerHost}:${devServerPort}`,
       "webpack/hot/dev-server",
       "./src/frontend/index.jsx",
+      "/src/frontend/assets/scss/main.scss",
     ],
   },
   module: {

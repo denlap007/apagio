@@ -48,7 +48,7 @@ gulp.task("watch", () => {
   gulp.watch([conf.paths.backendSrc], gulp.parallel("spawn-backend", "watch"));
 });
 
-gulp.task("templates:dev", function (doneFn) {
+gulp.task("templates:dev", (doneFn) => {
   const {
     devServerHost,
     devServerPort,
@@ -56,12 +56,14 @@ gulp.task("templates:dev", function (doneFn) {
     jsBundleName,
     jsVendorName,
     jsRuntimeName,
+    cssBundleName,
   } = conf.wpkConf;
   const hostPath = `${devServerHost}:${devServerPort}${publicPath}`;
   const dataMap = {
-    bundle: `${hostPath}${jsBundleName}.js`,
-    vendor: `${hostPath}${jsVendorName}.js`,
-    runtime: `${hostPath}${jsRuntimeName}.js`,
+    js_bundle: `${hostPath}${jsBundleName}.js`,
+    js_vendor: `${hostPath}${jsVendorName}.js`,
+    js_runtime: `${hostPath}${jsRuntimeName}.js`,
+    css_bundle: `${hostPath}${cssBundleName}.css`,
   };
 
   const errCheck = function (err, doneFn) {
@@ -71,11 +73,11 @@ gulp.task("templates:dev", function (doneFn) {
     }
   };
 
-  fs.readFile(conf.paths.indexTemplateSrc, "utf8", function (err, data) {
+  fs.readFile(conf.paths.indexTemplateSrc, "utf8", (err, data) => {
     errCheck(err);
     const result = replaceAll(data, dataMap);
 
-    fs.writeFile(conf.paths.indexTemplateDst, result, "utf8", function (err) {
+    fs.writeFile(conf.paths.indexTemplateDst, result, "utf8", (err) => {
       errCheck(err);
       doneFn();
     });

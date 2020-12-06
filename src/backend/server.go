@@ -22,9 +22,11 @@ import (
 	"net/http"
 
 	"github.com/denlap007/apagio/src/backend/config"
+	"github.com/denlap007/apagio/src/backend/handler"
 )
 
 func main() {
 	log.Println("Server is running on port ", config.ServerPort)
-	log.Println(http.ListenAndServe(":"+config.ServerPort, http.FileServer(http.Dir(config.StaticDir))))
+
+	log.Println(http.ListenAndServe(":"+config.ServerPort, handler.MakeGzipHandler(http.FileServer(http.Dir(config.StaticDir)))))
 }

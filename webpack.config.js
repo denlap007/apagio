@@ -22,6 +22,22 @@ module.exports = {
         loader: "babel-loader",
         options: { presets: ["@babel/env"] },
       },
+      // Fonts
+      {
+        test: /\.(ttf|eot|woff|woff2)$/,
+        loader: "file-loader",
+        options: {
+          name: "fonts/[name].[ext]",
+        },
+      },
+      // Files
+      {
+        test: /\.(jpg|jpeg|png|gif|svg|ico)$/,
+        loader: "file-loader",
+        options: {
+          name: "static/[name].[ext]",
+        },
+      },
     ],
   },
   resolve: {

@@ -34,12 +34,18 @@ gulp.task(
     );
   })
 );
-gulp.task("templates:prod", function (doneFn) {
-  const { jsBundleName, jsVendorName, jsRuntimeName } = conf.wpkConf;
+gulp.task("templates:prod", (doneFn) => {
+  const {
+    jsBundleName,
+    jsVendorName,
+    jsRuntimeName,
+    cssBundleName,
+  } = conf.wpkConf;
   const dataMap = {
-    bundle: `${jsBundleName}.js`,
-    vendor: `${jsVendorName}.js`,
-    runtime: `${jsRuntimeName}.js`,
+    js_bundle: `${jsBundleName}.js`,
+    js_vendor: `${jsVendorName}.js`,
+    js_runtime: `${jsRuntimeName}.js`,
+    css_bundle: `${cssBundleName}.css`,
   };
 
   const errCheck = function (err, doneFn) {
@@ -49,11 +55,11 @@ gulp.task("templates:prod", function (doneFn) {
     }
   };
 
-  fs.readFile(conf.paths.indexTemplateSrc, "utf8", function (err, data) {
+  fs.readFile(conf.paths.indexTemplateSrc, "utf8", (err, data) => {
     errCheck(err);
     const result = replaceAll(data, dataMap);
 
-    fs.writeFile(conf.paths.indexTemplateDst, result, "utf8", function (err) {
+    fs.writeFile(conf.paths.indexTemplateDst, result, "utf8", (err) => {
       errCheck(err);
       doneFn();
     });
@@ -101,35 +107,33 @@ gulp.task(
  * @return {!Promise}
  */
 function backendProd(outputBinaryPathsAndArchs) {
-  const promiseFn = (path, arch) => {
-    return (resolve, reject) => {
-      goCommand(
-        [
-          "build",
-          "-a",
-          "-installsuffix",
-          "cgo",
-          // record version info
-          // "-ldflags",
-          // conf.recordVersionExpression,
-          "-o",
-          path,
-          conf.backend.mainPackageName,
-        ],
-        (err) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve();
-          }
-        },
-        {
-          // Disable cgo package. Required to run on scratch docker image.
-          CGO_ENABLED: "0",
-          GOARCH: arch,
+  const promiseFn = (path, arch) => (resolve, reject) => {
+    goCommand(
+      [
+        "build",
+        "-a",
+        "-installsuffix",
+        "cgo",
+        // record version info
+        // "-ldflags",
+        // conf.recordVersionExpression,
+        "-o",
+        path,
+        conf.backend.mainPackageName,
+      ],
+      (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
         }
-      );
-    };
+      },
+      {
+        // Disable cgo package. Required to run on scratch docker image.
+        CGO_ENABLED: "0",
+        GOARCH: arch,
+      }
+    );
   };
 
   const goCommandPromises = outputBinaryPathsAndArchs.map(

@@ -57,7 +57,7 @@ function checkGo() {
     {
       env,
     },
-    function (error, stdout, stderror) {
+    (error, stdout, stderror) => {
       if (error || stderror || !stdout) {
         deferred.reject(
           new Error(
@@ -84,7 +84,7 @@ function checkGoVersion() {
     {
       env,
     },
-    function (error, stdout) {
+    (error, stdout) => {
       let match = /go version devel/.exec(stdout.toString());
       if (match && match.length > 0) {
         // If running a development version of Go we assume the version to be
@@ -139,7 +139,7 @@ function spawnProcess(processName, args, envOverride) {
   });
   // Call Gulp callback on task exit. This has to be done to make Gulp dependency management
   // work.
-  goTask.on("exit", function (code) {
+  goTask.on("exit", (code) => {
     if (code !== 0) {
       deferred.reject(Error(`Go command error, code: ${code}`));
       return;

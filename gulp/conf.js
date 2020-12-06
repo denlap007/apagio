@@ -98,6 +98,7 @@ module.exports = {
     jsBundleName: "bundle",
     jsVendorName: "vendor",
     jsRuntimeName: "runtime",
+    cssBundleName: "bundle",
     publicPath: "/public/",
     devServerPort: 3000,
     devServerHost: "http://localhost",
