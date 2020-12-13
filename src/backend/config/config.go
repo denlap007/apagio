@@ -19,7 +19,10 @@ package config
 
 import (
 	"log"
+	"os"
+	"path/filepath"
 
+	"github.com/golang/glog"
 	"github.com/spf13/viper"
 )
 
@@ -29,7 +32,7 @@ var (
 	// APIVersion the version of the server api
 	APIVersion = "/api/v1.0"
 	// StaticDir path to server assets from
-	StaticDir = "./public"
+	assetsDir = "../../public"
 )
 
 func parseConfig() {
@@ -49,4 +52,17 @@ func parseConfig() {
 	// viper.OnConfigChange(func(e fsnotify.Event) {
 	// 	log.Println("Configuration file updated: ", e.Name)
 	// })
+}
+
+// GetAssetsDir
+func GetAssetsDir() string {
+	path, err := os.Executable()
+	if err != nil {
+		glog.Fatalf("Error determining path to executable: %#v", err)
+	}
+	path, err = filepath.EvalSymlinks(path)
+	if err != nil {
+		glog.Fatalf("Error evaluating symlinks for path '%s': %#v", path, err)
+	}
+	return filepath.Join(filepath.Dir(path), assetsDir)
 }

@@ -8,17 +8,23 @@ const postcssPresetEnv = require("postcss-preset-env");
 const cssnano = require("cssnano");
 const postcssImport = require("postcss-import");
 const postcssUrl = require("postcss-url");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const common = require("./webpack.config");
 
 const {
+  paths: { indexTemplateSrc },
   wpkConf: { jsBundleName },
 } = require("./gulp/conf");
 
 module.exports = (env = {}) => {
   const plugins = [
     new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: ["**/*", "!index.html"],
       verbose: true,
+    }),
+
+    new HtmlWebpackPlugin({
+      template: indexTemplateSrc,
+      inject: "body",
     }),
     new MiniCssExtractPlugin(),
   ];

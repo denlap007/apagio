@@ -1,14 +1,10 @@
 const webpack = require("webpack");
 const { merge } = require("webpack-merge");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const common = require("./webpack.config");
 const {
-  wpkConf: {
-    outputPath,
-    jsBundleName,
-    publicPath,
-    devServerPort,
-    devServerHost,
-  },
+  paths: { indexTemplateSrc },
+  wpkConf: { outputPath, jsBundleName, devServerPort, devServerHost },
 } = require("./gulp/conf");
 
 module.exports = merge(common, {
@@ -18,7 +14,7 @@ module.exports = merge(common, {
       `webpack-dev-server/client?${devServerHost}:${devServerPort}`,
       "webpack/hot/dev-server",
       "./src/frontend/index.jsx",
-      "/src/frontend/assets/scss/main.scss",
+      "./src/frontend/assets/scss/main.scss",
     ],
   },
   module: {
@@ -29,14 +25,27 @@ module.exports = merge(common, {
       },
     ],
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: indexTemplateSrc,
+      inject: "body",
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+  ],
   resolve: {
     alias: { "react-dom": "@hot-loader/react-dom" },
   },
   devServer: {
+    proxy: {
+      "/api/**": {
+        target: "http://localhost:8080",
+        secure: false,
+      },
+    },
+    // serve static
     contentBase: outputPath,
     port: 3000,
-    publicPath: `${devServerHost}:${devServerPort}${publicPath}`,
+    publicPath: `${devServerHost}:${devServerPort}`,
     hotOnly: true,
     host: "0.0.0.0",
     headers: { "Access-Control-Allow-Origin": "*" },

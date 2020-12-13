@@ -1,12 +1,10 @@
 /**
  * @fileoverview Gulp tasks that serve the application.
  */
-import fs from "fs";
 import child from "child_process";
 import gulp from "gulp";
 import path from "path";
 import conf from "./conf";
-import replaceAll from "./utils";
 
 /**
  * Currently running backend process object. Null if the backend is not running.
@@ -48,49 +46,13 @@ gulp.task("watch", () => {
   gulp.watch([conf.paths.backendSrc], gulp.parallel("spawn-backend", "watch"));
 });
 
-gulp.task("templates:dev", (doneFn) => {
-  const {
-    devServerHost,
-    devServerPort,
-    publicPath,
-    jsBundleName,
-    jsVendorName,
-    jsRuntimeName,
-    cssBundleName,
-  } = conf.wpkConf;
-  const hostPath = `${devServerHost}:${devServerPort}${publicPath}`;
-  const dataMap = {
-    js_bundle: `${hostPath}${jsBundleName}.js`,
-    js_vendor: `${hostPath}${jsVendorName}.js`,
-    js_runtime: `${hostPath}${jsRuntimeName}.js`,
-    css_bundle: `${hostPath}${cssBundleName}.css`,
-  };
-
-  const errCheck = function (err, doneFn) {
-    if (err) {
-      console.log(err);
-      return doneFn();
-    }
-  };
-
-  fs.readFile(conf.paths.indexTemplateSrc, "utf8", (err, data) => {
-    errCheck(err);
-    const result = replaceAll(data, dataMap);
-
-    fs.writeFile(conf.paths.indexTemplateDst, result, "utf8", (err) => {
-      errCheck(err);
-      doneFn();
-    });
-  });
-});
-
 /**
  * Spawns new backend application process. Previously spawned
  * backend process is killed beforehand.
  */
 gulp.task(
   "spawn-backend",
-  gulp.series("kill-backend", "backend", "templates:dev", (doneFn) => {
+  gulp.series("kill-backend", "backend", (doneFn) => {
     runningBackendProcess = child.spawn(
       path.join(conf.paths.serve, conf.backend.binaryName),
       getBackendArgs(),

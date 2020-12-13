@@ -1,16 +1,6 @@
 const {
-  wpkConf: {
-    devServerHost,
-    devServerPort,
-    jsVendorName,
-    jsRuntimeName,
-    outputPath,
-    outputPublicPath,
-    publicPath,
-  },
+  wpkConf: { jsVendorName, jsRuntimeName, outputPath, outputPublicPath },
 } = require("./gulp/conf");
-
-const nodeEnv = process.env.NODE_ENV || "development";
 
 module.exports = {
   target: ["web", "es5"],
@@ -45,10 +35,7 @@ module.exports = {
   },
   output: {
     path: outputPath,
-    publicPath:
-      nodeEnv === "production"
-        ? outputPublicPath
-        : `${devServerHost}:${devServerPort}${publicPath}`,
+    publicPath: outputPublicPath,
     filename: "[name].js",
   },
   optimization: {

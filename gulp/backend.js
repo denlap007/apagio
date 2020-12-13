@@ -1,12 +1,10 @@
 /**
  * @fileoverview Gulp tasks for compiling backend application.
  */
-import fs from "fs";
 import gulp from "gulp";
 import lodash from "lodash";
 import path from "path";
 
-import replaceAll from "./utils";
 import conf from "./conf";
 import goCommand from "./gocommand";
 
@@ -34,37 +32,6 @@ gulp.task(
     );
   })
 );
-gulp.task("templates:prod", (doneFn) => {
-  const {
-    jsBundleName,
-    jsVendorName,
-    jsRuntimeName,
-    cssBundleName,
-  } = conf.wpkConf;
-  const dataMap = {
-    js_bundle: `${jsBundleName}.js`,
-    js_vendor: `${jsVendorName}.js`,
-    js_runtime: `${jsRuntimeName}.js`,
-    css_bundle: `${cssBundleName}.css`,
-  };
-
-  const errCheck = function (err, doneFn) {
-    if (err) {
-      console.log(err);
-      return doneFn();
-    }
-  };
-
-  fs.readFile(conf.paths.indexTemplateSrc, "utf8", (err, data) => {
-    errCheck(err);
-    const result = replaceAll(data, dataMap);
-
-    fs.writeFile(conf.paths.indexTemplateDst, result, "utf8", (err) => {
-      errCheck(err);
-      doneFn();
-    });
-  });
-});
 
 /**
  * Compiles backend application in production mode for the current architecture and places the
@@ -75,7 +42,7 @@ gulp.task("templates:prod", (doneFn) => {
  */
 gulp.task(
   "backend:prod",
-  gulp.series("templates:prod", () => {
+  gulp.series(() => {
     const outputBinaryPath = path.join(
       conf.paths.dist,
       conf.backend.binaryName

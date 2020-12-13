@@ -27,6 +27,7 @@ import (
 
 func main() {
 	log.Println("Server is running on port ", config.ServerPort)
-
-	log.Println(http.ListenAndServe(":"+config.ServerPort, handler.MakeGzipHandler(http.FileServer(http.Dir(config.StaticDir)))))
+	fs := http.FileServer(http.Dir(config.GetAssetsDir()))
+	http.Handle("/", handler.MakeGzipHandler(fs))
+	log.Println(http.ListenAndServe(":"+config.ServerPort, nil))
 }

@@ -104,7 +104,7 @@ module.exports = {
     devServerHost: "http://localhost",
     frontEndEntypoint: "./src/frontend/index.jsx",
     outputPath: path.join(basePath, "public"),
-    outputPublicPath: path.join(basePath, "public"),
+    outputPublicPath: "/",
   },
 
   /**
@@ -118,7 +118,7 @@ module.exports = {
     goTools: path.join(basePath, ".tools/go"),
     serve: path.join(basePath, ".tmp/serve"),
     src: path.join(basePath, "src"),
-    indexTemplateSrc: path.join(basePath, "templates/html/index.html"),
-    indexTemplateDst: path.join(basePath, "public/index.html"),
+    indexTemplateSrc: path.join(basePath, "templates", "html", "index.html"),
+    indexTemplateDst: path.join(basePath, "public", "index.html"),
   },
 };
