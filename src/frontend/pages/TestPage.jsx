@@ -15,7 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with apagio.  If not, see <http://www.gnu.org/licenses/>.
 
-import { hot } from "react-hot-loader";
-import AppRouter from "./Routes";
+import React from "react";
 
-export default hot(module)(AppRouter);
+export default function TestPage() {
+  return <div>Hello World</div>;
+}

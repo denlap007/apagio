@@ -42,8 +42,8 @@ module.exports = (env = {}) => {
     mode: "production",
     entry: {
       [jsBundleName]: [
-        "./src/frontend/index.jsx",
-        "/src/frontend/assets/scss/main.scss",
+        "./src/frontend/Index.jsx",
+        "/src/frontend/assets/styles/main.scss",
       ],
     },
     plugins,

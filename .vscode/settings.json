@@ -1,7 +1,7 @@
 {
   "licenser.license": "GPLv3",
   "licenser.author": "The Apagio Authors",
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "[javascript]": {
     "editor.formatOnSave": false
   },

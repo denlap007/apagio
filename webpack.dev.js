@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 const { merge } = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 const common = require("./webpack.config");
 const {
   paths: { indexTemplateSrc },
@@ -13,15 +14,18 @@ module.exports = merge(common, {
     [jsBundleName]: [
       `webpack-dev-server/client?${devServerHost}:${devServerPort}`,
       "webpack/hot/dev-server",
-      "./src/frontend/index.jsx",
-      "./src/frontend/assets/scss/main.scss",
+      "./src/frontend/Index.jsx",
+      // "./src/frontend/assets/styles/main.scss",
     ],
   },
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        test: /\.s[ac]ss$/i,
+        use: ["style-loader", "css-loader", "sass-loader"],
+        include: [
+          path.resolve(__dirname, "src", "frontend", "assets", "styles"),
+        ],
       },
     ],
   },

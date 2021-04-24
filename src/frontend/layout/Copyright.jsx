@@ -15,7 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with apagio.  If not, see <http://www.gnu.org/licenses/>.
 
-import { hot } from "react-hot-loader";
-import AppRouter from "./Routes";
+import React from "react";
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
 
-export default hot(module)(AppRouter);
+export default function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="https://material-ui.com/">
+        Apagio k8s Dashboard
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}

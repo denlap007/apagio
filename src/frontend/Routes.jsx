@@ -15,7 +15,23 @@
 // You should have received a copy of the GNU General Public License
 // along with apagio.  If not, see <http://www.gnu.org/licenses/>.
 
-import { hot } from "react-hot-loader";
-import AppRouter from "./Routes";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Layout from "./layout/Layout";
+import TestPage from "./pages/TestPage";
 
-export default hot(module)(AppRouter);
+export default function AppRouter() {
+  return (
+    <Router>
+      <Route
+        render={(props) => (
+          <Layout route={props}>
+            <Switch>
+              <Route exact path="/" component={TestPage} />
+            </Switch>
+          </Layout>
+        )}
+      />
+    </Router>
+  );
+}
