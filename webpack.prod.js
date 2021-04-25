@@ -41,10 +41,7 @@ module.exports = (env = {}) => {
   return merge(common, {
     mode: "production",
     entry: {
-      [jsBundleName]: [
-        "./src/frontend/Index.jsx",
-        "/src/frontend/assets/styles/main.scss",
-      ],
+      [jsBundleName]: ["./src/frontend/Index.jsx"],
     },
     plugins,
     module: {

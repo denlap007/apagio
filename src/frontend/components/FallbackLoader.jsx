@@ -15,29 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with apagio.  If not, see <http://www.gnu.org/licenses/>.
 
-import React, { Suspense, lazy } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import FallbackLoader from "./components/FallbackLoader";
-import Layout from "./layout/Layout";
+import React, { useState, useEffect } from "react";
 
-export default function AppRouter() {
-  return (
-    <Router>
-      <Route
-        render={(props) => (
-          <Layout route={props}>
-            <Suspense fallback={<FallbackLoader />}>
-              <Switch>
-                <Route
-                  exact
-                  path="/"
-                  component={lazy(() => import("./pages/TestPage"))}
-                />
-              </Switch>
-            </Suspense>
-          </Layout>
-        )}
-      />
-    </Router>
-  );
-}
+const Loading = () => <div>Loading...</div>;
+
+const FallbackLoader = () => {
+  const delay = 500;
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(true), delay);
+
+    return () => clearTimeout(timer);
+  });
+  return loading ? <Loading /> : null;
+};
+
+export default FallbackLoader;
